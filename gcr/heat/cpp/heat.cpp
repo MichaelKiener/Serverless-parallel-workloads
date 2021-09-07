@@ -10,10 +10,10 @@
 
 double wtime()
 {
-  struct timeval tv;
-  gettimeofday(&tv, 0);
+	struct timeval tv;
+	gettimeofday(&tv, 0);
 
-  return tv.tv_sec + 1e-6 * tv.tv_usec;
+	return tv.tv_sec + 1e-6 * tv.tv_usec;
 }
 
 double relax_jacobi(double **u1, double **utmp1,
@@ -53,7 +53,7 @@ double relax_jacobi(double **u1, double **utmp1,
 
 std::string runHeat(std::string input, int thread_input)
 {
-    int i, j;
+	int i, j;
 	int np, iter;
 	double time;
 
@@ -62,37 +62,36 @@ std::string runHeat(std::string input, int thread_input)
 
 	// timing
 
-    double residual;
-  std::string inputParam = input;
+	double residual;
+	std::string inputParam = input;
 
-    int N = 0;
+	int N = 0;
 
-    if (inputParam == "S")
-    {
-        N = 2200;
-    }
-    else if (inputParam == "M")
-    {
-        N = 5200;
-    }
-    else if (inputParam == "L")
-    {
-        N = 15200;
-    }
+	if (inputParam == "S")
+	{
+		N = 2200;
+	}
+	else if (inputParam == "M")
+	{
+		N = 5200;
+	}
+	else if (inputParam == "L")
+	{
+		N = 15200;
+	}
 	param.initial_res = N;
 	param.max_res = N;
-    int threads = omp_get_num_procs();
-    if (thread_input < threads)
-    {
-        threads = thread_input;
-    }
-    omp_set_num_threads(threads);
+	int threads = omp_get_max_threads();
+	if (thread_input < threads)
+	{
+		threads = thread_input;
+	}
+	omp_set_num_threads(threads);
 	// set the visualization resolution
 	param.visres = 100;
 	// check arguments
 	initialize_params(&param);
 	initialize(&param);
-	// time = (double *) malloc(sizeof(double), (int) (param.max_res - param.initial_res + param.res_step_size) / param.res_step_size);
 
 #pragma omp parallel for
 	for (i = 0; i < param.act_res + 2; i++)
@@ -102,8 +101,6 @@ std::string runHeat(std::string input, int thread_input)
 			param.uhelp[i * (param.act_res + 2) + j] = param.u[i * (param.act_res + 2) + j];
 		}
 	}
-	// starting time
-	// time[exp_number] = wtime();
 	residual = 999999999;
 	np = param.act_res + 2;
 	time = wtime();
@@ -111,11 +108,8 @@ std::string runHeat(std::string input, int thread_input)
 	{
 		residual = relax_jacobi(&(param.u), &(param.uhelp), np, np);
 	}
-
 	time = (wtime() - time) * 1000;
-	printf("Execution time: %fms, Threads: %d\n", time, threads);
-
 	finalize(&param);
-  std::string res = "Execution Time: " + std::to_string(time) + "ms\n Threads: " + std::to_string(threads);
-  return res;
+	std::string res = "Execution Time: " + std::to_string(time) + "ms\n Threads: " + std::to_string(threads);
+	return res;
 }

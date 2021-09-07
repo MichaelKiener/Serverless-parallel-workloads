@@ -9,10 +9,10 @@
 
 double wtime()
 {
-  struct timeval tv;
-  gettimeofday(&tv, 0);
+    struct timeval tv;
+    gettimeofday(&tv, 0);
 
-  return tv.tv_sec + 1e-6 * tv.tv_usec;
+    return tv.tv_sec + 1e-6 * tv.tv_usec;
 }
 
 void vector_mult_matrix(double *matrix, double *vec, double *result, int rows, int cols)
@@ -31,7 +31,7 @@ void vector_mult_matrix(double *matrix, double *vec, double *result, int rows, i
 std::string runAtax(std::string input, int thread_input)
 {
 
-  std::string inputParam = input;
+    std::string inputParam = input;
 
     int N = 0;
     int M = 0;
@@ -64,15 +64,15 @@ std::string runAtax(std::string input, int thread_input)
     x = (double *)malloc(N * sizeof(double *));
     x_help = (double *)malloc(N * sizeof(double *));
 
-    // Initialize x
-    #pragma omp parallel for
+// Initialize x
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         x[i] = 1.0 + (double)i / fn;
     }
 
-    // Initialize A
-    #pragma omp parallel for
+// Initialize A
+#pragma omp parallel for
     for (int i = 0; i < M; i++)
     {
         for (int j = 0; j < N; j++)
@@ -92,6 +92,6 @@ std::string runAtax(std::string input, int thread_input)
     free(A);
     free(x);
     free(x_help);
-  std::string res = "Execution Time: " + std::to_string(time) + "ms\n Threads: " + std::to_string(threads);
-  return res;
+    std::string res = "Execution Time: " + std::to_string(time) + "ms\n Threads: " + std::to_string(threads);
+    return res;
 }

@@ -9,16 +9,16 @@
 
 double wtime()
 {
-  struct timeval tv;
-  gettimeofday(&tv, 0);
+    struct timeval tv;
+    gettimeofday(&tv, 0);
 
-  return tv.tv_sec + 1e-6 * tv.tv_usec;
+    return tv.tv_sec + 1e-6 * tv.tv_usec;
 }
 
 std::string runMVT(std::string input, int thread_input)
 {
 
-  std::string inputParam = input;
+    std::string inputParam = input;
 
     int N = 0;
 
@@ -82,6 +82,6 @@ std::string runMVT(std::string input, int thread_input)
     free(x2);
     free(y1);
     free(y2);
-  std::string res = "Execution Time: " + std::to_string(time) + "ms\n Threads: " + std::to_string(threads);
-  return res;
+    std::string res = "Execution Time: " + std::to_string(time) + "ms\n Threads: " + std::to_string(threads);
+    return res;
 }

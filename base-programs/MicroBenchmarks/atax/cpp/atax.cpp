@@ -6,10 +6,10 @@
 
 double wtime()
 {
-  struct timeval tv;
-  gettimeofday(&tv, 0);
+    struct timeval tv;
+    gettimeofday(&tv, 0);
 
-  return tv.tv_sec + 1e-6 * tv.tv_usec;
+    return tv.tv_sec + 1e-6 * tv.tv_usec;
 }
 
 // Assumes cols = vector size and results
@@ -28,7 +28,7 @@ void vector_mult_matrix(double *matrix, double *vec, double *result, int rows, i
 
 int main(int argc, char *argv[])
 {
-    
+
     std::string inputParam = argv[1];
 
     int N = 0;
@@ -62,15 +62,15 @@ int main(int argc, char *argv[])
     A = (double *)malloc(M * N * sizeof(double *));
     x = (double *)malloc(N * sizeof(double *));
     x_help = (double *)malloc(N * sizeof(double *));
-    // Initialize x
-    #pragma omp parallel for
+// Initialize x
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
-    {   
+    {
         x[i] = 1.0 + (double)i / fn;
     }
 
-    // Initialize A
-    #pragma omp parallel for
+// Initialize A
+#pragma omp parallel for
     for (int i = 0; i < M; i++)
     {
         for (int j = 0; j < N; j++)
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
             A[i * N + j] = (double)((i + j) % N) / (5.0 * (double)M);
         }
     }
-    
+
     double time = wtime();
 
     vector_mult_matrix(A, x, x_help, M, N);
@@ -87,9 +87,8 @@ int main(int argc, char *argv[])
 
     time = wtime() - time;
     time = time * 1000;
-    std::cout << "Execution Time: "<< std::to_string(time) << "ms \n Threads: " << std::to_string(threads) << std::endl;
+    std::cout << "Execution Time: " << std::to_string(time) << "ms \n Threads: " << std::to_string(threads) << std::endl;
     free(A);
     free(x);
     free(x_help);
-
 }

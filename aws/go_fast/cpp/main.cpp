@@ -21,58 +21,60 @@ int invocationCount = 0;
 
 using namespace aws::lambda_runtime;
 
-invocation_response my_handler(invocation_request const& request)
+invocation_response my_handler(invocation_request const &request)
 {
   invocationCount++;
   std::string addInfo = "Invocation Count: " + std::to_string(invocationCount);
-  if (invocationCount <= 1) {
-  std::string cpuInfo = "";
+  if (invocationCount <= 1)
+  {
+    std::string cpuInfo = "";
     {
-        using namespace std;
-        char ch;
-        //creating the object of the data type 'istream'
-        ifstream new_file;
-        //opening the above file
-        new_file.open("/proc/cpuinfo", ios::in);
-        //checking whether the file is available or not
-        if (!new_file)
+      using namespace std;
+      char ch;
+      //creating the object of the data type 'istream'
+      ifstream new_file;
+      //opening the above file
+      new_file.open("/proc/cpuinfo", ios::in);
+      //checking whether the file is available or not
+      if (!new_file)
+      {
+        cout << "Sorry the file you are looking for is not available" << endl;
+      }
+      else
+      {
+        // reading the whole file till the end
+        std::string temp;
+        while (std::getline(new_file, temp))
         {
-            cout << "Sorry the file you are looking for is not available" << endl;
+          cpuInfo += temp + "\n";
         }
-        else
-        {
-            // reading the whole file till the end
-             std::string temp;
-            while(std::getline(new_file, temp)) {
-                cpuInfo += temp + "\n";
-            }
-            //closing the file after reading
-            new_file.close();
-        }
-        addInfo += "\n" + cpuInfo;
+        //closing the file after reading
+        new_file.close();
+      }
+      addInfo += "\n" + cpuInfo;
     }
   }
-   using namespace Aws::Utils::Json;
-   std::string res = "";
-   JsonValue json(request.payload);
-    if (!json.WasParseSuccessful()) {
-        return invocation_response::failure("Failed to parse input JSON", "InvalidJSON");
-    }
+  using namespace Aws::Utils::Json;
+  std::string res = "";
+  JsonValue json(request.payload);
+  if (!json.WasParseSuccessful())
+  {
+    return invocation_response::failure("Failed to parse input JSON", "InvalidJSON");
+  }
 
-   auto v = json.View();
-   int thread_input = 10;
-   std::string inputParam = "";
-    if (v.ValueExists("Threads") && v.GetObject("Threads").IsIntegerType()) {
-        thread_input = v.GetInteger("Threads");
-        // res += "Threads existing " + std::to_string(v.GetInteger("Threads")) + " ";
-    }
-    if (v.ValueExists("Input") && v.GetObject("Input").IsString()) {
-         inputParam = v.GetString("Input");
-         // res += "Input existing " + v.GetString("Input") + " ";
-    }
+  auto v = json.View();
+  int thread_input = 10;
+  std::string inputParam = "";
+  if (v.ValueExists("Threads") && v.GetObject("Threads").IsIntegerType())
+  {
+    thread_input = v.GetInteger("Threads");
+  }
+  if (v.ValueExists("Input") && v.GetObject("Input").IsString())
+  {
+    inputParam = v.GetString("Input");
+  }
 
-   // return invocation_response::success("Hello, World!", "application/json");
-   int N = 0;
+  int N = 0;
 
   if (inputParam == "S")
   {
@@ -90,7 +92,8 @@ invocation_response my_handler(invocation_request const& request)
   // res += "N = " + std::to_string(N);
   int threads = omp_get_num_procs();
 
-  if(thread_input < threads) {
+  if (thread_input < threads)
+  {
     threads = thread_input;
   }
   omp_set_num_threads(threads);
@@ -132,6 +135,6 @@ invocation_response my_handler(invocation_request const& request)
 
 int main()
 {
-   run_handler(my_handler);
-   return 0;
+  run_handler(my_handler);
+  return 0;
 }

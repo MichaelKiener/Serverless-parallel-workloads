@@ -12,7 +12,6 @@ double wtime()
     return tv.tv_sec + 1e-6 * tv.tv_usec;
 }
 
-
 // Assumes cols = vector size and results
 void vector_mult_matrix(double *matrix, double *vec, double *result, int rows, int cols)
 {
@@ -108,7 +107,7 @@ int main(int argc, char *argv[])
 
     time = wtime() - time;
     time = time * 1000;
-    std::cout << "Execution Time: "<< std::to_string(time) << "ms \n Threads: " << std::to_string(threads) << std::endl;
+    std::cout << "Execution Time: " << std::to_string(time) << "ms \n Threads: " << std::to_string(threads) << std::endl;
     free(A);
     free(x1);
     free(x2);

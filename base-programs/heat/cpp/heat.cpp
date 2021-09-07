@@ -7,9 +7,6 @@
 #include "string"
 #include <iostream>
 
-// #include <papi.h>
-
-
 double relax_jacobi(double **u1, double **utmp1,
 					int sizex, int sizey)
 {
@@ -54,41 +51,38 @@ int main(int argc, char *argv[])
 	// algorithmic parameters
 	algoparam_t param;
 
-	// timing
-
 	double residual;
 	std::string inputParam = argv[1];
 
-    int N = 0;
+	int N = 0;
 
-    if (inputParam == "S")
-    {
-        N = 2200;
-    }
-    else if (inputParam == "M")
-    {
-        N = 5200;
-    }
-    else if (inputParam == "L")
-    {
-        N = 15200;
-    }
+	if (inputParam == "S")
+	{
+		N = 2200;
+	}
+	else if (inputParam == "M")
+	{
+		N = 5200;
+	}
+	else if (inputParam == "L")
+	{
+		N = 15200;
+	}
 	param.initial_res = N;
 	param.max_res = N;
-    int threads = omp_get_max_threads();
-    char *p;
-    double thread_input = strtol(argv[2], &p, 10);
-    if (thread_input < threads)
-    {
-        threads = thread_input;
-    }
-    omp_set_num_threads(threads);
+	int threads = omp_get_max_threads();
+	char *p;
+	double thread_input = strtol(argv[2], &p, 10);
+	if (thread_input < threads)
+	{
+		threads = thread_input;
+	}
+	omp_set_num_threads(threads);
 	// set the visualization resolution
 	param.visres = 100;
 	// check arguments
 	initialize_params(&param);
 	initialize(&param);
-	// time = (double *) malloc(sizeof(double), (int) (param.max_res - param.initial_res + param.res_step_size) / param.res_step_size);
 
 #pragma omp parallel for
 	for (i = 0; i < param.act_res + 2; i++)
@@ -98,8 +92,6 @@ int main(int argc, char *argv[])
 			param.uhelp[i * (param.act_res + 2) + j] = param.u[i * (param.act_res + 2) + j];
 		}
 	}
-	// starting time
-	// time[exp_number] = wtime();
 	residual = 999999999;
 	np = param.act_res + 2;
 	time = wtime();
@@ -109,7 +101,7 @@ int main(int argc, char *argv[])
 	}
 	std::cout << std::to_string(residual) << std::endl;
 	time = (wtime() - time) * 1000;
-	std::cout << "Execution Time: "<< std::to_string(time) << "ms \n Threads: " << std::to_string(threads) << std::endl;
+	std::cout << "Execution Time: " << std::to_string(time) << "ms \n Threads: " << std::to_string(threads) << std::endl;
 
 	finalize(&param);
 	return 0;

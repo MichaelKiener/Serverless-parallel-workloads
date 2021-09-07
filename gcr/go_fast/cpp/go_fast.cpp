@@ -37,9 +37,9 @@ std::string runGoFast(std::string input, int thread_input)
     N = 22000;
   }
 
-
   int threads = omp_get_max_threads();
-  if(thread_input < threads) {
+  if (thread_input < threads)
+  {
     threads = thread_input;
   }
   omp_set_num_threads(threads);
@@ -48,15 +48,16 @@ std::string runGoFast(std::string input, int thread_input)
   A = (double *)malloc(N * N * sizeof(double *));
   unsigned int state[threads];
 
-   for (int i = 0; i < threads; i++) {
-      state[i] = 35791246 * threads;
-   }
+  for (int i = 0; i < threads; i++)
+  {
+    state[i] = 35791246 * threads;
+  }
   srand(SEED);
-  // Initialize Arrays
-  #pragma omp parallel for firstprivate(state)
+// Initialize Arrays
+#pragma omp parallel for firstprivate(state)
   for (int i = 0; i < N * N; i++)
   {
-    A[i] = (double)rand_r(&state[omp_get_thread_num()])/RAND_MAX;
+    A[i] = (double)rand_r(&state[omp_get_thread_num()]) / RAND_MAX;
   }
 
   // Computation
