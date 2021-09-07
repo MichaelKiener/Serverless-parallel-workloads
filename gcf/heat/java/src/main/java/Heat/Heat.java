@@ -117,7 +117,7 @@ public class Heat {
                   }
                }
 
-               for (int copy = 0; copy < A_ref.length; copy++) {
+               for (int copy = lowerBound; copy < upperBound; copy++) {
                   A_ref_help[copy] = A_ref[copy];
                }
                countInit.add(0);
@@ -132,18 +132,9 @@ public class Heat {
             System.out.println("Thread is interrupted");
          }
       }
-      // double[] A_help = A.clone();
       long execTime = System.nanoTime();
-      /*
-       * for(double a:A) { System.out.print(" " + a + " "); }
-       */
-
-      // Arrays.fill(data, 0, data.length, generator.nextFloat());
-
-      // float trace = 0;
 
       final double[] residuals = new double[threads];
-      double residualSum = 0.0;
       // number of threads
       for (int iter = 0; iter < iterations; iter++) {
          Vector<Integer> count = new Vector<Integer>(0);

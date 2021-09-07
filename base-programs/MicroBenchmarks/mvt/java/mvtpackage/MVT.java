@@ -32,17 +32,7 @@ public class MVT {
       double[] x2 = new double[N];
       double[] y1 = new double[N];
       double[] y2 = new double[N];
-      /* for (int i = 0; i < N; i++) {
-         x1[i] = (double) (i % N) / (double) N;
-         x2[i] = (double) ((i + 1) % N) / (double) N;
-         y1[i] = (double) ((i + 3) % N) / (double) N;
-         y2[i] = (double) ((i + 4) % N) / (double) N;
-         for (int j = 0; j < N; j++) {
-            A[i * N + j] = (double)((i * j) % N) / ((double)N);
-         }
-      } */
-      // Arrays.fill(data, 0, data.length, generator.nextFloat());
-      // float trace = 0;
+
       int threads = threads_in;
       if (threads > Runtime.getRuntime().availableProcessors()) {
          threads = Runtime.getRuntime().availableProcessors();

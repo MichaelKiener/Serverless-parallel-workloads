@@ -38,13 +38,7 @@ public class Atax {
       double[] A = new double[N * M];
       double[] x = new double[N];
       double[] x_help = new double[N];
-      /*
-       * for(int i = 0; i < N; i++) { x[i] = 1.0 + (double)i / fn; } for (int i = 0; i
-       * < M; i++) { for (int j = 0; j < N; j++) { A[i * N + j] = (double)((i + j) %
-       * N) / (5.0 * (double)M); } }
-       */
-      // Arrays.fill(data, 0, data.length, generator.nextFloat());
-      // float trace = 0;
+
       int threads = threads_in;
       if (threads > Runtime.getRuntime().availableProcessors()) {
          threads = Runtime.getRuntime().availableProcessors();
@@ -56,8 +50,6 @@ public class Atax {
       // Init Matrix / Vector
       for (int i = 0; i < threads; i++) {
          // declare variables as final which will be used in method run below
-         final int lowerBoundN = i * (N / threads);
-         final int upperBoundN = (i + 1) * (N / threads);
          final int lowerBound = i * (M / threads);
          final int upperBound = (i + 1) * (M / threads);
          final int offset = N;
@@ -89,8 +81,6 @@ public class Atax {
             System.out.println("Thread is interrupted");
          }
       }
-
-    
 
       for (int i = 0; i < threads; i++) {
          // declare variables as final which will be used in method run below
