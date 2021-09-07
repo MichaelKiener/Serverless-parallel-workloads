@@ -11,7 +11,6 @@ import (
 	"strconv"
 )
 
-// "gonum.org/v1/gonum/mat"
 func RunGoFast(size string, threads_in int) string {
 	dataSize := size
 	N := 0
@@ -25,12 +24,6 @@ func RunGoFast(size string, threads_in int) string {
 		N = 22000
 	}
 	data := make([]float64, N * N)
-/* 	for i := range data {
-		data[i] = rand.NormFloat64()
-	} */
-	// fmt.Println(data)
-
-	// a := mat.NewDense(N, N, data)
 
 	start := time.Now()
 	threads := 0
@@ -65,7 +58,6 @@ func RunGoFast(size string, threads_in int) string {
 			upperBound := (index + 1) * (N / threads)
 			trace_thread := 0.0
 			for j:= lowerBound; j < upperBound; j++ {
-				// trace_thread += math.Tanh(a.At(j, j))
 				trace_thread += math.Tanh(data[j * N + j])
 			}
 			trace[index] = trace_thread

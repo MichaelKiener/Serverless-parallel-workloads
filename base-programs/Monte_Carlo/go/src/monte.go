@@ -41,8 +41,6 @@ func RunMonte(size string, threads_in int) string {
 			upperBound := (index + 1) * (iter / threads)
 			count_thread := int64(0)
 			for j := lowerBound; j < upperBound; j++ {
-				//x := rand.NormFloat64()
-				//y := rand.NormFloat64()
 				x = generator.Float64()
 				y = generator.Float64()
 				// math.Pow slows down the program by a factor of 10

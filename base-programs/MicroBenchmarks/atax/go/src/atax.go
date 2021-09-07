@@ -28,18 +28,6 @@ func RunAtax(size string, threads_in int) string {
 	x := make([]float64, N)
 	x_help := make([]float64, N)
 
-	/* for i := 0; i < N; i++ {
-		x[i] = 1.0 + float64(i) / float64(fn);
-	}
-	// fmt.Println(data)
-	for i := 0; i < M; i++ {
-        for j := 0; j < N; j++ {
-            A[i * N + j] = float64(((i + j) % N)) / float64((5 * M));
-        }
-    } */
-
-	// a := mat.NewDense(N, N, data)
-
 	threads := 0
 	threads = threads_in
 	if runtime.NumCPU() < threads {

@@ -24,17 +24,6 @@ func RunMVT(size string, threads_in int) string {
 	y1 := make([]float64, N)
 	y2 := make([]float64, N)
 
-/* 	for i := 0; i < N; i++ {
-		x1[i] = float64((i % N)) / float64(N)
-		x2[i] = float64(((i + 1) % N)) / float64(N)
-		y1[i] = float64(((i + 3) % N)) / float64(N)
-		y2[i] = float64(((i + 4) % N)) / float64(N)
-		for j := 0; j < N; j++ {
-            A[i * N + j] = float64(((i * j) % N)) / float64(N);
-        }
-	} */
-	// a := mat.NewDense(N, N, data)
-
 	threads := 0
 	threads = threads_in
 	if runtime.NumCPU() < threads {
@@ -83,6 +72,6 @@ func RunMVT(size string, threads_in int) string {
 	duration := time.Since(start)
 
 	timeInMS := float64(duration) / 1000000
-	// runtime.GC()
+	runtime.GC()
 	return "Execution Time: " + strconv.FormatFloat(timeInMS, 'f', 6, 64) + "ms \nThreads: " + strconv.Itoa(threads)
 }
